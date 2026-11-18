@@ -143,6 +143,9 @@ static ssize_t double_tap_store(struct kobject *kobj,
 		return -EINVAL;
 
 	ts->db_wakeup = !!val;
+	/* Also arm the panel's double tap gesture, like the touchfeature path,
+	 * instead of waiting for the next resume (broken after a reboot). */
+	schedule_work(&ts->switch_mode_work);
 	return count;
 }
 
